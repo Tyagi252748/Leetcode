@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int detectcycle(int node,int n, vector<int> adj[]){
+        queue<int> q;
+        q.push(node);
+        int ans = INT_MAX;
+        vector<int>dist(n, (int)(1e9));
+        dist[node] = 0;
+        vector<int> par(n, - 1);
+        while(!q.empty()){
+            int top = q.front();
+            q.pop();
+            for(auto it : adj[top]){
+                if(dist[it] == (int)(1e9)){
+                    dist[it] = 1 + dist[top];
+                    par[it] = top;
+                    q.push(it);
+                }else if(par[top] != it && par[it] != top){
+                    ans = min(ans, dist[top] + dist[it] + 1);
+                }
+            }
+        }
+        if(ans == INT_MAX){
+            return INT_MAX;
+        }else{
+            return ans;
+        }
+}
+    int findShortestCycle(int n, vector<vector<int>>& edges) {
+        vector<int>adj[n];
+        for(int i = 0; i < edges.size(); i++){
+            int u = edges[i][0];
+            int v = edges[i][1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+        int res = INT_MAX;
+        for(int i = 0; i < n; i++){
+                res = min(res, detectcycle(i, n, adj));
+        }
+        if(res == INT_MAX)return -1;
+        
+        return res;
+    }
+};
