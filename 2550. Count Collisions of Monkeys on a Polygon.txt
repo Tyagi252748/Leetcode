@@ -1,0 +1,19 @@
+class Solution {
+public:
+    double myPow(long long x, long long n, long long mod) {
+        long long ans = 1;
+        while(n > 0){
+            if(n % 2 == 1)
+                ans = (ans*x)%mod;
+
+                x = (x*x)%mod;
+                n = n >>1;
+        }
+        return ans%mod;
+    }
+    int monkeyMove(int n) {
+        long long ans = myPow(2, n, 1000000007);
+        ans =  (ans + 1000000007 - 2)%1000000007;
+        return (int)ans;
+    }
+};

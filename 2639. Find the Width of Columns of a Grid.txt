@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int countdigit(int x){
+        if(x == 0)return 1;
+        int y = abs(x);
+        int cnt = 0;
+        while(y > 0){
+            y = y/10;
+            cnt++;
+        }
+        if(x < 0)return cnt + 1;
+        return cnt;
+        
+    }
+    vector<int> findColumnWidth(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        vector<int> ans(m, 0);
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                int x = grid[j][i];
+                int digit = countdigit(x);
+                ans[i] = max(ans[i], digit);
+            }
+        }
+        return ans;
+    }
+};

@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int dfs(int node, int mycost, vector<bool>& hasApple, vector<int> adj[], vector<int> &vis){
+        if(vis[node] == 1)return 0;
+        vis[node] = 1;
+
+        int childCost = 0;
+        for(auto it : adj[node]){
+            childCost += dfs(it, 2, hasApple, adj, vis);
+        }
+        if(childCost == 0 && !hasApple[node])return 0;
+
+        return childCost + mycost;
+
+    }
+    int minTime(int n, vector<vector<int>>& edges, vector<bool>& hasApple) {
+        vector<int> vis(n, 0);
+        vector<int> adj[n];
+        for(auto it : edges){
+            adj[it[0]].push_back(it[1]);
+            adj[it[1]].push_back(it[0]);
+        }
+        int ans = dfs(0, 0, hasApple, adj, vis);
+        return ans;
+    }
+};

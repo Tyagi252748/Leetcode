@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int findheight(TreeNode* root, int &parent, int target, int h){
+        if(root == NULL)return 0;
+        if(root->val == target)return h;
+        parent = root->val;
+        int left = findheight(root->left, parent, target, h + 1);
+        if(left) return left;
+        parent = root->val;
+        int right = findheight(root->right, parent, target, h + 1); 
+        return right;
+    }
+    bool isCousins(TreeNode* root, int x, int y) {
+        if(root->val == x || root->val == y)return false;
+        int parent_x = -1;
+        int height_x = findheight(root, parent_x, x, 0);
+
+        int parent_y = -1;
+        int height_y = findheight(root, parent_y, y, 0);
+
+        if(height_x == height_y && parent_x != parent_y)return true;
+        return false;
+        
+    }
+};

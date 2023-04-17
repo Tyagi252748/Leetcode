@@ -1,0 +1,21 @@
+class Solution {
+public:
+    ListNode* mergeNodes(ListNode* head) {
+        ListNode* zero = head;
+        ListNode* p = head->next;
+        while(p != NULL){
+            if(p->val != 0){
+                zero->val += p->val;
+            }else{
+                if(p->next == NULL){
+                    zero->next = NULL;
+                }else{
+                    zero->next = p;
+                }
+                zero = p;
+            }
+            p = p->next;
+        }
+        return head;
+    }
+};
