@@ -1,0 +1,35 @@
+class Solution {
+public:
+    void DFS(int node, vector<int> adj[], vector<int> &reach, int &cnt){
+        if(reach[node])return;
+        reach[node] = 1;
+        cnt++;
+        for(auto it : adj[node]){
+            if(!reach[it]){
+                DFS(it, adj, reach, cnt);
+            }
+        }
+    }
+    int maximumDetonation(vector<vector<int>>& bombs) {
+        int n = bombs.size();
+        vector<int> adj[n];
+        for(int i = 0; i < n; i++){
+            long long r = bombs[i][2];
+            for(int j = 0; j <n; j++){
+                if(i != j){
+                    long long x = abs(bombs[i][0] - bombs[j][0]);
+                    long long y = abs(bombs[i][1] - bombs[j][1]);
+                    if(x*x + y*y <= r*r)adj[i].push_back(j);
+                }
+            }
+        }
+        int ans = 0;
+        for(int i = 0; i < n; i++){
+            vector<int> reach(n, 0);
+            int cnt = 0;
+            DFS(i, adj, reach, cnt);
+            ans = max(cnt, ans);
+        }
+        return ans;
+    }
+};

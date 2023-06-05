@@ -1,0 +1,93 @@
+
+									USING DISJOINT SET DATA STRUCTURE
+
+class DisjointSet{
+    vector<int> parent, rank;
+    public:
+    DisjointSet(int n){
+        rank.resize(n + 1, 0);
+        parent.resize(n+1,0);
+    
+        for(int i = 0 ; i < n; i++){
+            parent[i] = i;
+        }
+    }
+    int findParent(int node){
+        if(parent[node] == node)
+        return node;
+        else{
+            return parent[node] = findParent(parent[node]);
+        }
+    }
+    void UnionByRank(int u, int v){
+        int par_u = findParent(u);
+        int par_v = findParent(v);
+        if(par_u == par_v)return;
+        if(rank[par_u] < rank[par_v]){
+            parent[par_u] = par_v;
+        }else if(rank[par_v] < rank[par_u]){
+            parent[par_v] = par_u;
+        }else{
+            parent[par_v] = par_u;
+            rank[par_u]++;
+        }
+    }
+};
+class Solution {
+public:
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int V = isConnected.size();
+        DisjointSet ds(V);
+        for(int i = 0; i < V; i++){
+            for(int j = 0; j < V; j++){
+                if(isConnected[i][j] == 1 && i != j){
+                    ds.UnionByRank(i, j);
+                }
+            }
+        }
+        int ans = 0;
+        for(int i = 0; i < V; i++){
+            if(ds.findParent(i) == i){
+                ans++;
+            }
+        }
+        return ans;
+    }
+};
+
+
+
+									USING DFS
+
+class Solution {
+public:
+    void DFS(int node, vector<int> &vis, vector<int> adj[]){
+        vis[node] = 1;
+        for(auto it : adj[node]){
+            if(!vis[it]){
+                DFS(it, vis, adj);
+            }
+        }
+    }
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int V = isConnected.size();
+        vector<int> adj[V];
+        for(int i = 0; i < V; i++){
+            for(int j = 0; j < V; j++){
+                if(isConnected[i][j] == 1 && i != j){
+                    adj[i].push_back(j);
+                    adj[j].push_back(i);
+                }
+            }
+        }
+        vector<int> vis(V, 0);
+        int count = 0;
+        for(int i = 0; i < V; i++){
+            if(!vis[i]){
+                count++;
+                DFS(i, vis, adj);
+            }
+        }
+        return count;
+    }
+};

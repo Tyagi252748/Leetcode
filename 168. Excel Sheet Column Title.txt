@@ -1,0 +1,13 @@
+class Solution {
+public:
+    string convertToTitle(int columnNumber) {
+        string ans = "";
+        while(columnNumber > 0){
+            int c = (columnNumber - 1)%26;
+            ans += char(c + 65);
+            columnNumber = (columnNumber-1)/26;
+        }
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};

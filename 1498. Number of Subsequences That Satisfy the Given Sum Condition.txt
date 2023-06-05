@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int numSubseq(vector<int>& nums, int target) {
+        int ans = 0;
+        int mod = 1e9+7;
+        sort(nums.begin(), nums.end());
+
+        vector<int> power(nums.size(), 1);
+        for(int i = 1; i < nums.size(); i++){
+            power[i] = power[i - 1]*2%mod;
+        }
+        int l = 0;
+        int r = nums.size() - 1;
+        while(l <= r){
+            if(nums[l] + nums[r] > target){
+                r--;
+            }else{
+                ans += power[r - l];
+                ans = ans%mod;
+                l++;
+            }
+        }
+        return ans;
+    }
+};

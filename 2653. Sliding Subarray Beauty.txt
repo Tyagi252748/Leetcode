@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int findX(map<int, int> &mp, int x){
+        int cnt = 0;
+        int ele = 0;
+        for(auto it : mp){
+            cnt += it.second;
+            if(cnt >= x){
+                ele = it.first;
+                break;
+            }
+        }
+        return ele;
+    }
+    vector<int> getSubarrayBeauty(vector<int>& nums, int k, int x) {
+        map<int, int> mp;
+        int n = nums.size();
+        int i = 0;
+        int j = 0;
+        vector<int> ans;
+        while(i < n){
+            if(nums[i] < 0)mp[nums[i]]++;
+            if(i - j + 1 < k){
+                i++;
+            }else if(i - j + 1 == k){
+                int xth = findX(mp, x);
+                ans.push_back(xth);
+                mp[nums[j]]--;
+                if(mp[nums[j]] == 0)mp.erase(nums[j]);
+                i++;
+                j++;
+            }
+        }
+        return ans;
+    }
+};

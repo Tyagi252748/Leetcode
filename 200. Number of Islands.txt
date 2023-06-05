@@ -1,0 +1,27 @@
+class Solution {
+public:
+    void DFS(int r, int c, int n, int m, vector<vector<char>>& grid){
+        if(r >= n || r < 0 || c >= m || c < 0 || grid[r][c] == '0')return;
+        grid[r][c] = '0';
+        int delr[4] = {-1, 1, 0, 0};
+        int delc[4] = {0, 0, -1, 1};
+        for(int i = 0; i < 4; i++){
+            DFS(r + delr[i], c + delc[i], n, m, grid);
+        }
+    }
+    int numIslands(vector<vector<char>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        queue<pair<int, int>>q;
+        int ans = 0;
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(grid[i][j] == '1'){
+                    ans++;
+                    DFS(i, j, n, m, grid);
+                }
+            }
+        }
+        return ans;
+    }
+};

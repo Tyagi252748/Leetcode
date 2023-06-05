@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int orangesRotting(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        int frsh_org = 0;
+        queue<pair<int, pair<int, int>>>q;
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(grid[i][j] == 2){
+                    q.push({0, {i, j}});
+                    vis[i][j] = 2;
+                }
+                if(grid[i][j] == 1)frsh_org++;
+            }
+        }
+        int rotted_org = 0;
+        int time = 0;
+        int delr[4] = {0, 0, -1, 1};
+        int delc[4] = {1, -1, 0, 0};
+        while(!q.empty()){
+            int t = q.front().first;
+            int r = q.front().second.first;
+            int c = q.front().second.second;
+            time = max(t, time);
+            q.pop();
+            for(int i = 0;i < 4; i++){
+                int nr = r + delr[i];
+                int nc = c + delc[i];
+                if(nr >= 0 && nr < n && nc >= 0 && nc < m && grid[nr][nc] == 1){
+                    q.push({t + 1, {nr, nc}});
+                    rotted_org++;
+                    grid[nr][nc] = 2;
+                }
+            }
+        }
+        if(rotted_org != frsh_org)return -1;
+        return time;
+    }
+};

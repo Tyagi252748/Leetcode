@@ -1,0 +1,66 @@
+class Solution {
+public:
+    ListNode* mergelists(ListNode* head1, ListNode* head2){
+    ListNode* dummyhead = new ListNode(0);
+    ListNode* tail = dummyhead;
+    while(head1 != NULL && head2 != NULL){
+        if(head1->val < head2->val){
+            tail->next = head1;
+            head1 = head1->next;
+            tail = tail->next;
+        }else{
+            tail->next = head2;
+            head2 = head2->next;
+            tail = tail->next;
+        }
+    }
+        tail->next = (head1 != NULL) ? head1 : head2;
+        return dummyhead->next;
+    }
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        if(lists.size() == 0)return NULL;
+        while(lists.size() > 1){
+            ListNode* mergedHead = mergelists(lists[0], lists[1]);
+            lists.push_back(mergedHead);
+            lists.erase(lists.begin());
+            lists.erase(lists.begin());
+        }
+        return lists[0];
+    }
+};
+
+
+                                              OR USING PRIORITY QUEUE
+
+class Solution {
+public:
+    class compare{
+        public:
+        bool operator()(ListNode* a, ListNode* b){
+            return a->val > b->val;
+        }
+    };
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        priority_queue<ListNode*, vector<ListNode*>, compare> pq;
+        for(int i = 0; i < lists.size(); i++){
+            if(lists[i] != NULL)pq.push(lists[i]);
+        }
+        ListNode* head = NULL;
+        ListNode* tail = NULL;
+        while(!pq.empty()){
+            ListNode* temp = pq.top();
+            pq.pop();
+            if(temp->next != NULL){
+                pq.push(temp->next);
+            }
+            if(head == NULL){
+                head = temp;
+                tail = temp;
+            }else{
+                tail->next = temp;
+                tail = tail->next;
+            }  
+        }
+        return head;
+    }
+};

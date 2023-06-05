@@ -1,0 +1,54 @@
+class Solution {
+public:
+void DFS(int r, int c, vector<vector<int>> &grid, vector<vector<int>> &vis, queue<pair<int, int>> &q){
+    int n = grid.size();
+    int m = grid[0].size();
+    if(r < 0 || r >= n || c < 0 || c >= m || vis[r][c] || grid[r][c] == 0)return;
+    int delr[4] = {-1, 1, 0, 0};
+    int delc[4] = {0, 0, -1, 1};
+    vis[r][c] = 1;
+    q.push( {r, c} );
+    for(int i = 0; i < 4; i++){
+        DFS(r + delr[i], c + delc[i], grid, vis, q);
+    }
+}
+    int shortestBridge(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int m = grid[0].size();
+        vector<vector<int>> vis(n, vector<int>(m, 0));
+        queue<pair<int, int>>q;
+        bool found = false;
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(grid[i][j] == 1){
+                    DFS(i, j, grid, vis, q);
+                    found = true;
+                    break;
+                }
+            }
+            if(found)break;
+        }
+        int delr[4] = {-1, 1, 0, 0};
+        int delc[4] = {0, 0, -1, 1};
+        int step = 0;
+        while(!q.empty()){
+            int size = q.size();
+            while(size--){
+                int r = q.front().first;
+                int c = q.front().second;
+                q.pop();
+                for(int i = 0; i < 4; i++){
+                    int nr = r + delr[i];
+                    int nc = c + delc[i];
+                    if(nr >= 0 && nr < n && nc >= 0 && nc < m && !vis[nr][nc]){
+                        if(grid[nr][nc] == 1)return step;
+                        q.push( {nr, nc} );
+                        vis[nr][nc] = 1;
+                    }
+                }
+            }
+            step++;
+        }
+        return -1;
+    }
+};

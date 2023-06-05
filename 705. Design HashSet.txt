@@ -1,0 +1,19 @@
+class MyHashSet {
+public:
+    int set[1000001] = {0};
+    MyHashSet() {
+        
+    }
+    
+    void add(int key) {
+        set[key]++;
+    }
+    
+    void remove(int key) {
+        set[key] = 0;
+    }
+    
+    bool contains(int key) {
+        return set[key];
+    }
+};

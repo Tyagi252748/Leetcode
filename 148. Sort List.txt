@@ -1,0 +1,41 @@
+class Solution {
+public:
+    ListNode *getmid(ListNode *head){
+        ListNode *slow = head;
+        ListNode *fast = head;
+        while(fast->next != NULL && fast->next->next != NULL){
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        return slow;
+    }
+    ListNode *merge(ListNode *head1, ListNode *head2){
+        ListNode *dummyhead = new ListNode(0);
+        ListNode *tail = dummyhead;
+        while(head1 != NULL && head2 != NULL){
+            if(head1->val < head2->val){
+                tail->next = head1;
+                head1 = head1->next;
+                tail = tail->next;
+            }else{
+                tail->next = head2;
+                head2 = head2->next;
+                tail = tail->next;
+            }
+        }
+        tail->next = (head1 != NULL) ? head1 : head2;
+        
+        return dummyhead->next;
+    }
+    ListNode* sortList(ListNode* head) {
+        if(head == NULL || head->next == NULL)return head;
+        
+        ListNode *mid = getmid(head);
+        ListNode *newHead = mid->next;
+        mid->next = NULL;
+        
+        ListNode *first = sortList(head);
+        ListNode *second = sortList(newHead);
+        return merge(first, second);
+    }
+};

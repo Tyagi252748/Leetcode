@@ -1,0 +1,56 @@
+									USING BFS 
+				
+
+class Solution {
+public:
+    int numOfMinutes(int n, int headID, vector<int>& manager, vector<int>& informTime) {
+        vector<int> adj[n];
+        for(int i = 0; i < n; i++){
+            if(manager[i] != -1)adj[manager[i]].push_back(i);
+        }
+
+        queue<pair<int, int>> q;
+        int ans = 0;
+        q.push( {informTime[headID], headID} );
+        while(!q.empty()){
+            int size = q.size();
+            while(size--){
+                int currTime = q.front().first;
+                int Manager = q.front().second;
+                ans = max(ans, currTime);
+                q.pop();
+                for(auto employee : adj[Manager]){
+                    int time = currTime + informTime[employee];
+                    q.push( {time, employee});
+                }
+            }
+        }      
+        return ans; 
+    }
+};
+
+
+
+										USING DFS
+
+class Solution {
+public:
+    int ans = 0;
+    int cnt = 0;
+    void DFS(int manager, vector<int> adj[], vector<int> &informTime){
+        ans = max(ans, cnt);
+        for(auto employee : adj[manager]){
+            cnt += informTime[manager];
+            DFS(employee, adj, informTime);
+            cnt -= informTime[manager];
+        }
+    }
+    int numOfMinutes(int n, int headID, vector<int>& manager, vector<int>& informTime) {
+        vector<int> adj[n];
+        for(int i = 0; i < n; i++){
+            if(manager[i] != -1)adj[manager[i]].push_back(i);
+        }
+        DFS(headID, adj, informTime);
+        return ans;
+    }
+};

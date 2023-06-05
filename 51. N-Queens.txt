@@ -1,0 +1,49 @@
+class Solution {
+public:
+    bool isSafe(int r, int c, vector<string> &Board, int n){
+        int row = r;
+        int clm = c;
+        while(row >= 0 && clm >= 0){
+            if(Board[row][clm] == 'Q')return false;
+            row--;
+            clm--;
+        }
+        row = r;
+        clm = c;
+        while(clm >= 0){
+            if(Board[row][clm] == 'Q')return false;
+            clm--;
+        }
+        row = r;
+        clm = c;
+        while(row < n && clm >= 0){
+            if(Board[row][clm] == 'Q')return false;
+            row++;
+            clm--;
+        }
+        return true;
+    }
+    void solve(int clm, vector<string> &Board, vector<vector<string>> &ans, int n){
+        if(clm == n){
+            ans.push_back(Board);
+            return;
+        }
+        for(int row = 0; row < n; row++){
+            if(isSafe(row, clm, Board, n)){
+                Board[row][clm] = 'Q';
+                solve(clm + 1, Board, ans, n);
+                Board[row][clm] = '.';
+            }
+        }
+    }
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<string>> ans;
+        vector<string>Board(n);
+        string s(n, '.');
+        for(int i = 0; i < n; i++){
+            Board[i] = s;
+        }
+        solve(0, Board, ans, n);
+        return ans;
+    }
+};

@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int subarrayGCD(vector<int>& nums, int k) {
+        int n = nums.size();
+        int cnt = 0;
+        for(int i = 0; i < n; i++){
+            int gcd = nums[i];
+            for(int j = i; j < n; j++){
+                gcd = __gcd(gcd, nums[j]);
+                if(gcd == k)cnt++;
+                if(gcd < k)break;
+            }
+        }
+        return cnt;
+    }
+};
+
+                          OR CODE IN PYTHON
+
+class Solution:
+    def subarrayGCD(self, nums: List[int], k: int) -> int:
+        def gcd(a, b):
+            if b == 0:
+                return a
+            return gcd(b, a%b)
+        res = 0
+        n = len(nums)
+        for i in range(n):
+            gcd_curr = 0
+            for j in range(i, n):
+                gcd_curr = gcd(gcd_curr, nums[j])
+
+                if gcd_curr == k:
+                    res+=1
+                elif gcd_curr < k:
+                    break
+        return res

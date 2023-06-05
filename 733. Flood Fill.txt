@@ -1,0 +1,54 @@
+									USING BFS
+
+class Solution {
+public:
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        int n = image.size();
+        int m = image[0].size();
+        queue<pair<int, int>>q;
+        q.push({sr, sc});
+        int val = image[sr][sc];
+        if(val == color)return image;
+        image[sr][sc] = color;
+        int delr[4] = {-1, 1, 0, 0};
+        int delc[4] = {0, 0, -1, 1};
+        while(!q.empty()){
+            int r = q.front().first;
+            int c = q.front().second;
+            q.pop();
+            for(int i = 0; i < 4; i++){
+                int nr = r + delr[i];
+                int nc = c + delc[i];
+                if(nr >= 0 && nr < n && nc >= 0 && nc < m && image[nr][nc] == val){
+                    q.push({nr, nc});
+                    image[nr][nc] = color;  
+                }
+            }
+        }
+        return image;
+    }
+};
+
+
+
+									USING DFS
+
+class Solution {
+public:
+    void DFS(int r, int c, int n, int m, int val, int color, vector<vector<int>>& image){
+        if(r < 0 || r >= n || c < 0 || c >= m || image[r][c] != val)return;
+        image[r][c] = color;
+        DFS(r + 1, c, n, m, val, color, image);
+        DFS(r - 1, c, n, m, val, color, image);
+        DFS(r, c + 1, n, m, val, color, image);
+        DFS(r, c - 1, n, m, val, color, image);
+    }
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+        int n = image.size();
+        int m = image[0].size();
+        int val = image[sr][sc];
+        if(val == color)return image;
+        DFS(sr, sc, n, m, val, color, image);
+        return image;
+    }
+};
