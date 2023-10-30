@@ -1,0 +1,26 @@
+class SnapshotArray {
+public:
+    map<int, map<int, int>> mp;
+    int id = 0;
+    SnapshotArray(int length) {
+        for(int i = 0; i < length; i++){
+            map<int, int> mmp; mmp[0] = 0;
+            mp[i] = mmp;
+        }
+    }
+    
+    void set(int index, int val) {
+        mp[index][id] = val;
+    }
+    
+    int snap() {
+        id++;
+        return id - 1;
+    }
+    
+    int get(int index, int snap_id) {
+        auto it = mp[index].upper_bound(snap_id);
+        it--;
+        return it->second;
+    }
+};

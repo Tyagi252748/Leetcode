@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int maxLevelSum(TreeNode* root) {
+        int level = 1;
+        int ans;
+        int max_sum = INT_MIN;
+        queue<TreeNode*> q;
+        q.push(root);
+        while(!q.empty()){
+            int size = q.size();
+            int sum = 0;
+            while(size--){
+                auto Node = q.front();
+                sum += Node->val;
+                q.pop();
+                if(Node->left)q.push(Node->left);
+                if(Node->right)q.push(Node->right);
+            }
+            if(sum > max_sum){
+                max_sum = sum;
+                ans = level;
+            }
+            level++;
+        }
+        return ans;
+    }
+};
